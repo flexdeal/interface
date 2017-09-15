@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/interface/css/login.css">
+    <title>Login | Flexdeal</title>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <input type="password" id="pass" placeholder="Password" /><br>
+
+        <input type="file" onchange="loadWallet(event)"><br>
+
+        <button onclick="generate()" />Generate!</button> Refresh the page after doing this.
+
+        <button onclick="decrypt()" />Decrypt!</button> Upload a wallet with "Choose File" before doing this.
+
+    </div>
+
+</body>
+
+<script src="/interface/js/cryptico.min.js"></script>
+<script src="/interface/js/web3.min.js"></script>
+<script>
+    if (Web3) {
+        Web3 = null;
+        Web3 = undefined;
+        delete Web3;
+    }
+    if (web3) {
+        web3 = null;
+        web3 = undefined;
+        delete web3;
+    }
+    genWeb3();
+    var web3 = new (require("web3"))();
+    web3.setProvider(new web3.providers.HttpProvider("https://flexdeal.tech:8545/"));
+</script>
+<script src="/interface/js/ethereumjs-tx.js"></script>
+<script src="/interface/js/lightwallet.min.js"></script>
+<script src="/interface/js/main.js"></script>
+<script src="/interface/js/getters.js"></script>
+<script src="/interface/js/setters.js"></script>
+
+</html>
