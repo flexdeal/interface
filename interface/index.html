@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Interface | FlexDeal</title>
+</head>
+
+<body class="black">
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+
+    </div>
+    <div class="container-fluid black">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4 text-center shadow white">
+                <h2>Wallet</h2>
+                <hr>
+                <h3 id="wallet">1.33 ETH</h3>
+                <div id="profileContent">
+                    <h4>Public Address</h4>
+                    <p>Address</p>
+                    <button id="privBtn" class="btn btn-block btn-warning">Show Private Key</button>
+                    <button id="logout" class="btn btn-block btn-danger">Logout</button>
+                </div>
+                <i id="account" class="glyphicon glyphicon-menu-down btn-block"></i>
+            </div>
+
+            <div class="col-md-7">
+                <div>
+                    <div class="col-md-12">
+                        <div class="row text-center">
+                            <div class="createBtn col-xs-12 border shadow white">
+                                <h2 class="pointer">Create Deal</h2>
+                                <div id="create" class="tabSection text-center">
+                                    <form>
+                                        <h3>Name Of Deal</h3>
+                                        <input class="formItem" type="text">
+
+                                        <h3>Price</h3>
+                                        <input type="text" class="formItem">
+
+                                        <h3>Seeker Collateral</h3>
+                                        <input class="formItem" type="text">
+
+                                        <h3>Provider Collateral</h3>
+                                        <input class="formItem" type="text">
+
+                                        <h3>Address of Seeker</h3>
+                                        <input class="formItem" type="text">
+
+                                        <h3>Address of Provider</h3>
+                                        <input type="text" class="formItem">
+
+                                        <h3>Address of Arbitrator</h3>
+                                        <input type="text" class="formItem">
+                                        <br><br>
+
+                                        <input type="submit" value="Submit" />
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <div class="fundBtn col-xs-12 border shadow white">
+                                <h2 class="pointer">Fund Deal</h2>
+                                <div id="fund" class="tabSection text-center">
+                                    <h3>Search for a Deal to Fund</h3>
+                                    <form class="navbar-form" role="search">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="viewBtn col-xs-12 shadow white">
+                                <h2 class="pointer">View Deal</h2>
+                                <div id="view" class="tabSection text-center">
+                                    <h3>Search for a Deal to View</h3>
+                                    <form class="navbar-form" role="search">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="/interface/js/cryptico.min.js"></script>
+<script src="/interface/js/web3.min.js"></script>
+<script>
+    if (Web3) {
+        Web3 = null;
+        Web3 = undefined;
+        delete Web3;
+    }
+    if (web3) {
+        web3 = null;
+        web3 = undefined;
+        delete web3;
+    }
+    genWeb3();
+    var web3 = new (require("web3"))();
+    web3.setProvider(new web3.providers.HttpProvider("https://flexdeal.tech:8545/"));
+</script>
+<script src="/interface/js/ethereumjs-tx.js"></script>
+<script src="/interface/js/lightwallet.min.js"></script>
+<script src="/interface/js/main.js"></script>
+<script src="/interface/js/getters.js"></script>
+<script src="/interface/js/setters.js"></script>
+
+<script>
+
+    var shown = false, createShown = false, fundShown = false, viewShown = false;
+    $(document).ready(function () {
+        setTimeout(function () {
+            $('body').addClass('loaded');
+        }, 3000);
+
+        $(".tabSection").slideUp(0);
+        $("#profileContent").slideUp(0);
+
+        $(".createBtn").click(function () {
+            if (createShown === false) {
+                $("#fund").slideUp(1000);
+                $("#view").slideUp(1000);
+                $("#create").slideDown(1000);
+                createShown = true;
+                fundShown = false;
+                viewShown = false;
+            } else {
+                $("#create").slideUp(1000);
+                createShown = false;
+            }
+        });
+
+        $(".fundBtn").click(function () {
+            if (fundShown === false) {
+                $("#create").slideUp(1000);
+                $("#view").slideUp(1000);
+                $("#fund").slideDown(1000);
+                fundShown = true;
+                createShown = false;
+                viewShown = false;
+            } else {
+                $("#fund").slideUp(1000);
+                fundShown = false;
+            }
+        });
+
+        $(".viewBtn").click(function () {
+            if (viewShown === false) {
+                $("#fund").slideUp(1000);
+                $("#create").slideUp(1000);
+                $("#view").slideDown(1000);
+                viewShown = true;
+                createShown = false;
+                fundShown = false;
+            } else {
+                $("#view").slideUp(1000);
+                viewShown = false;
+            }
+        });
+
+        $(".closeBtn").click(function () {
+            $("#fund").slideUp(1000);
+            $("#create").slideUp(1000);
+            $("#view").slideUp(1000);
+        });
+
+        $("#account").click(function () {
+            if (shown === false) {
+                $("#profileContent").slideDown(1000);
+                shown = true;
+                $("#account").toggleClass("glyphicon-menu-up");
+                $("#account").toggleClass("glyphicon-menu-down");
+            } else {
+                $("#profileContent").slideUp(1000);
+                shown = false;
+                $("#account").toggleClass("glyphicon-menu-down");
+                $("#account").toggleClass("glyphicon-menu-up");
+            }
+        })
+    });
+
+</script>
+
+</html>
